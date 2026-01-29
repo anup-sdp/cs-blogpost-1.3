@@ -22,3 +22,5 @@ export function hideModal(modalId) {
   const modal = bootstrap.Modal.getInstance(document.getElementById(modalId));
   if (modal) modal.hide();
 }
+
+// bootstrap.Modal is assumed to be globally available, Modal API is available globally since Bootstrap attaches to window.bootstrap
