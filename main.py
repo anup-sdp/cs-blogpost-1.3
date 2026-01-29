@@ -42,7 +42,7 @@ templates = Jinja2Templates(directory="templates")
 
 @app.get("/", include_in_schema=False, name="home")
 @app.get("/posts", include_in_schema=False, name="posts")
-async def home(request: Request, db: Annotated[AsyncSession, Depends(get_db)]):
+async def home(request: Request, db: Annotated[AsyncSession, Depends(get_db)]):  # why Annotated? see get_db()
     result = await db.execute(
         select(models.Post).options(selectinload(models.Post.author)).order_by(models.Post.date_posted.desc()), # selectinload(): avoids N+1 queries 
     )
