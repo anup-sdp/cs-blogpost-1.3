@@ -2,11 +2,12 @@
 # part 7, https://www.youtube.com/watch?v=2JPDt-Jp6fM&list=PL-osiE80TeTsak-c-QsVeg0YYG_0TeyXI&index=8 (Sync vs Async - Converting Your App to Asynchronous)
 # part 8, https://www.youtube.com/watch?v=NkgIHa6KtHg&list=PL-osiE80TeTsak-c-QsVeg0YYG_0TeyXI&index=9 (Routers - Organizing Routes into Modules with APIRouter)
 # part 9, https://www.youtube.com/watch?v=vqjZOyT4QRs (Frontend Forms - Connecting JavaScript to Your API)
+# part 10, https://www.youtube.com/watch?v=Go4wYJJhR3k&list=PL-osiE80TeTsak-c-QsVeg0YYG_0TeyXI&index=10 (Authentication - Registration and Login with JWT)
 
 cmd:
 python -m venv myenv
 myenv\Scripts\activate
-part 7: (at 8:30)
+part 7:
 pip install "fastapi[standard]" sqlalchemy aiosqlite
 aiosqlite: async driver for sqlite
 pip freeze > requirements.txt 
@@ -15,6 +16,13 @@ code .
 write files
 
 fastapi dev main.py
+uvicorn main:app --reload
+
+part 10:
+pip install "pwdlib[argon2]" # (recommended) securely hash user passwords (passlib is older)
+pip install pyjwt # provides tools to encode/decode JWT tokens (e.g., creating tokens on login, verifying tokens in protected routes)(alternative: python-jose)
+pip install pydantic-settings (... + supports .env file)
+--- at 53:00
 
 =====
 git:

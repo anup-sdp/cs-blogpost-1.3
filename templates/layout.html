@@ -36,7 +36,7 @@
         <!-- Stylesheet -->
         <link rel="stylesheet"
               type="text/css"
-              href="{{ url_for("static", path='css/main.css') }}">
+              href="{{ url_for('static', path='css/main.css') }}">
         <!-- Set a theme color that matches your website's primary color -->
         <meta name="theme-color" content="#527c9f">
         <!-- Favicon for all browsers -->
@@ -80,14 +80,24 @@
                         </div>
                         <!-- Navbar Right Side -->
                         <div class="navbar-nav">
-                            <!-- NOTE: Once auth is set up, this button will only be visible when logged in -->
-                            <button class="btn btn-outline-light mb-2 mb-md-0 me-md-2"
-                                    type="button"
-                                    data-bs-toggle="modal"
-                                    data-bs-target="#createPostModal">New Post</button>
-                            <!-- NOTE: Once auth is set up, this button will only be visible when logged in -->
-                            <a class="btn btn-outline-light mb-2 mb-md-0 me-md-2" href="#">Login</a>
-                            <a class="btn btn-light mb-2 mb-md-0 me-md-3" href="#">Register</a>
+                            <!-- Shown when logged in (hidden by default, shown via JS) -->
+                            <div id="loggedInNav" class="d-none">
+                                <button class="btn btn-outline-light mb-2 mb-md-0 me-md-2"
+                                        type="button"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#createPostModal">New Post</button>
+                                <span id="usernameDisplay" class="navbar-text me-md-2"></span>
+                                <button class="btn btn-outline-light mb-2 mb-md-0 me-md-3"
+                                        type="button"
+                                        id="logoutBtn">Logout</button>
+                            </div>
+                            <!-- Shown when logged out -->
+                            <div id="loggedOutNav">
+                                <a class="btn btn-outline-light mb-2 mb-md-0 me-md-2"
+                                   href="{{ url_for('login_page') }}">Login</a>
+                                <a class="btn btn-light mb-2 mb-md-0 me-md-3"
+                                   href="{{ url_for('register_page') }}">Register</a>
+                            </div>
                             <div class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle"
                                    href="#"
@@ -256,74 +266,95 @@
       // Initialize
       setTheme(localStorage.getItem('theme') || 'auto');
         </script>
-        <!-- Create Post Form Handler -->
-        <script type="module">
-    import {
-    getErrorMessage,
-    hideModal,
-    showModal,
-    } from "/static/js/utils.js";
-
-    const createForm = document.getElementById("createPostForm");
-
-    createForm.addEventListener("submit", async (event) => {
-    // Stop default form submission - we'll handle it with JavaScript
-    event.preventDefault();
-
-    // Gather form values into a plain object {title: "...", content: "..."}
-    const formData = new FormData(createForm);
-    const postData = Object.fromEntries(formData.entries());
-
-    // TEMPORARY - hardcoded until authorization (Tutorial 11)
-    postData.user_id = 1;
-
-    try {
-        // POST to our API as JSON
-        const response = await fetch("/api/posts", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify(postData),
-        });
-
-        if (response.ok) {
-        const data = await response.json();
-        document.getElementById("successMessage").textContent =
-            `Post "${data.title}" created successfully!`;
-
-        hideModal("createPostModal");
-        showModal("successModal");
-
-        // Clear form
-        createForm.reset();
-
-        // Reload page after modal is hidden to show new post
-        document
-            .getElementById("successModal")
-            .addEventListener(
-            "hidden.bs.modal",
-            () => {
-                window.location.reload();
-            },
-            { once: true },
-            );
-        } else {
-        const error = await response.json();
-        document.getElementById("errorMessage").textContent =
-            getErrorMessage(error);
-
-        hideModal("createPostModal");
-        showModal("errorModal");
+    <!-- Auth State Management -->
+    <script type="module">
+        import { getCurrentUser, logout } from '/static/js/auth.js';
+        // Update navbar based on auth state
+        async function updateAuthUI() {
+            const user = await getCurrentUser();
+            const loggedInNav = document.getElementById('loggedInNav');
+            const loggedOutNav = document.getElementById('loggedOutNav');
+            if (user) {
+            loggedInNav.classList.remove('d-none');
+            loggedInNav.classList.add('d-flex');
+            loggedOutNav.classList.add('d-none');
+            document.getElementById('usernameDisplay').textContent = user.email;
+            } else {
+            loggedInNav.classList.add('d-none');
+            loggedInNav.classList.remove('d-flex');
+            loggedOutNav.classList.remove('d-none');
+            }
         }
-    } catch (error) {
-        document.getElementById("errorMessage").textContent =
-        "Network error. Please check your connection and try again.";
-        showModal("errorModal");
-    }
-    });
-        </script>
-        {% block scripts %}
-        {% endblock scripts %}
+        // Logout handler
+        document.getElementById('logoutBtn').addEventListener('click', logout);
+        // Update UI on page load
+        updateAuthUI();
+    </script>
+    <!-- Create Post Form Handler -->
+    <script type="module">
+        import {getErrorMessage, hideModal, showModal,} from "/static/js/utils.js";
+        const createForm = document.getElementById("createPostForm");
+        createForm.addEventListener("submit", async (event) => {
+        // Stop default form submission - we'll handle it with JavaScript
+        event.preventDefault();
+        // Gather form values into a plain object {title: "...", content: "..."}
+        const formData = new FormData(createForm);
+        const postData = Object.fromEntries(formData.entries());
+        // TEMPORARY - hardcoded until authorization (Tutorial 11)
+        postData.user_id = 1;
+        try {
+            // POST to our API as JSON
+            const response = await fetch("/api/posts", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(postData),
+            });
+            if (response.ok) {
+            const data = await response.json();
+            document.getElementById("successMessage").textContent =
+                `Post "${data.title}" created successfully!`;
+            hideModal("createPostModal");
+            showModal("successModal");
+            // Clear form
+            createForm.reset();
+            // Reload page after modal is hidden to show new post
+            document
+                .getElementById("successModal")
+                .addEventListener(
+                "hidden.bs.modal",
+                () => {
+                    window.location.reload();
+                },
+                { once: true },
+                );
+            } else {
+            const error = await response.json();
+            document.getElementById("errorMessage").textContent =
+                getErrorMessage(error);
+            hideModal("createPostModal");
+            showModal("errorModal");
+            }
+        } catch (error) {
+            document.getElementById("errorMessage").textContent =
+            "Network error. Please check your connection and try again.";
+            showModal("errorModal");
+        }
+        });
+    </script>
+    {% block scripts %}
+    {% endblock scripts %}
     </body>
 </html>
+
+
+<!-- 
+using type="module" in script tags, (recommended for modern web apps):
+- we can use import and export
+- Each module has its own scope - variables and functions defined in a module are not added to the global scope. (don’t leak into window)
+- Modules are automatically in strict mode
+- Modules are loaded deferred by default - JS runs after DOM is ready
+- File paths must be explicit - no: import { foo } from "myfile";  yes: import { foo } from "./myfile.js";
+- Modules use CORS rules
+-->
