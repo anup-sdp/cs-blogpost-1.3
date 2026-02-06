@@ -120,6 +120,14 @@ async def register_page(request: Request):
     )
 
 
+@app.get("/account", include_in_schema=False)
+async def account_page(request: Request):
+    return templates.TemplateResponse(
+        request,
+        "account.html",
+        {"title": "Account"},
+    )
+
 
 @app.exception_handler(StarletteHTTPException)
 async def general_http_exception_handler(
@@ -170,6 +178,7 @@ async def validation_exception_handler(
 # fastapi dev main.py
 # uvicorn main:app --reload
 
+# question: how oauth2 is being used instead of jsut jwt tokens? -----
 
 """
 Base.metadata.create_all(engine):

@@ -1,8 +1,9 @@
 <!-- templates/post.html -->
 <!-- displays a single blogpost, edit and delete functionality in this page, at eg. http://127.0.0.1:8000/posts/1-->
+
 {% extends "layout.html" %}
 {% block content %}
-    <article class="content-section py-3 px-4 mb-4">
+    <article class="content-section py-3 px-4 mb-4" data-user-id="{{post.user_id}}"> <!-- post.user_id used in external js file -->
         <div class="d-flex align-items-start gap-4">
             <img class="rounded-circle article-img flex-shrink-0"
                  src="{{ post.author.image_path }}"
@@ -18,19 +19,16 @@
                 </div>
                 <h2 class="article-title">{{ post.title }}</h2>
                 <p class="article-content">{{ post.content }}</p>
-                <!-- Only show edit/delete options if user_id is 1 (TEMPORARY - until authentication) -->
-                {% if post.user_id == 1 %}
-                    <div class="post-actions mt-3 pt-3 border-top">
-                        <button type="button"
-                                class="btn btn-outline-secondary me-1"
-                                data-bs-toggle="modal"
-                                data-bs-target="#editModal">Edit Post</button>
-                        <button type="button"
-                                class="btn btn-outline-danger"
-                                data-bs-toggle="modal"
-                                data-bs-target="#deleteModal">Delete Post</button>
-                    </div>
-                {% endif %}
+                <div id="postActions" class="post-actions mt-3 pt-3 border-top d-none">
+                    <button type="button"
+                        class="btn btn-outline-secondary me-1"
+                        data-bs-toggle="modal"
+                        data-bs-target="#editModal">Edit Post</button>
+                    <button type="button"
+                        class="btn btn-outline-danger"
+                        data-bs-toggle="modal"
+                        data-bs-target="#deleteModal">Delete Post</button>
+                </div>
             </div>
         </div>
     </article>
@@ -51,8 +49,7 @@
                 </div>
                 <form id="editPostForm">
                     <div class="modal-body">
-                        <input type="hidden" name="post_id" value="{{ post.id }}">
-						<!-- ^ -->
+                        <input type="hidden" name="post_id" value="{{ post.id }}"> <!-- post.id used in post.js -->						
                         <div class="mb-3">
                             <label for="editTitle" class="form-label">Title</label>
                             <input type="text"
@@ -112,7 +109,7 @@
 {% block scripts %}
     {# Load post-specific JavaScript module for edit/delete functionality #}
     <script type="module" src="{{ url_for('static', path='js/post.js') }}"></script>
-    {# in django, {% static 'js/file.js' %} #}
+    {# example in django, {% static 'js/file.js' %} #}
 {% endblock scripts %}
 
 <!-- can add data-post-id to a html element, then in external js access it with dataset.postId or getAttribute() -->

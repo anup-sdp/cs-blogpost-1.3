@@ -3,6 +3,7 @@
 # part 8, https://www.youtube.com/watch?v=NkgIHa6KtHg&list=PL-osiE80TeTsak-c-QsVeg0YYG_0TeyXI&index=9 (Routers - Organizing Routes into Modules with APIRouter)
 # part 9, https://www.youtube.com/watch?v=vqjZOyT4QRs (Frontend Forms - Connecting JavaScript to Your API)
 # part 10, https://www.youtube.com/watch?v=Go4wYJJhR3k&list=PL-osiE80TeTsak-c-QsVeg0YYG_0TeyXI&index=10 (Authentication - Registration and Login with JWT)
+# part 11, https://www.youtube.com/watch?v=MY0TFMMm9B0&list=PL-osiE80TeTsak-c-QsVeg0YYG_0TeyXI&index=11&t=11s (Authorization - Protecting Routes and Verifying Current User)
 
 cmd:
 python -m venv myenv
@@ -22,7 +23,12 @@ part 10:
 pip install "pwdlib[argon2]" # (recommended) securely hash user passwords (passlib is older)
 pip install pyjwt # provides tools to encode/decode JWT tokens (e.g., creating tokens on login, verifying tokens in protected routes)(alternative: python-jose)
 pip install pydantic-settings (... + supports .env file)
---- at 53:00
+
+part 11:
+at 27:30
+
+
+learn more about: attribute_names(in posts.py), 
 
 =====
 git:
@@ -33,4 +39,8 @@ git branch -M main
 git remote add origin https://github.com/anup-sdp/cs-blogpost-1.3.git
 git push -u origin main
 =====
+git add .
+git commit -m "add part-11"
+git push -u origin main
+---
 git log --oneline  # commit history
