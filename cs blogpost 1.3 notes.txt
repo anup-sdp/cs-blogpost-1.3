@@ -4,6 +4,7 @@
 # part 9, https://www.youtube.com/watch?v=vqjZOyT4QRs (Frontend Forms - Connecting JavaScript to Your API)
 # part 10, https://www.youtube.com/watch?v=Go4wYJJhR3k&list=PL-osiE80TeTsak-c-QsVeg0YYG_0TeyXI&index=10 (Authentication - Registration and Login with JWT)
 # part 11, https://www.youtube.com/watch?v=MY0TFMMm9B0&list=PL-osiE80TeTsak-c-QsVeg0YYG_0TeyXI&index=11&t=11s (Authorization - Protecting Routes and Verifying Current User)
+# part 12, https://www.youtube.com/watch?v=AExumWjfbyo&list=PL-osiE80TeTsak-c-QsVeg0YYG_0TeyXI&index=12&t=133s (File Uploads - Image Processing, Validation, and Storage)
 
 cmd:
 python -m venv myenv
@@ -19,13 +20,20 @@ write files
 fastapi dev main.py
 uvicorn main:app --reload
 
+---
+users:
+username: anup30, email: anup30@example.com, pw: aB@12345
+username: kasem, email: kasem@example.com, pw: aB@12345
+---
 part 10:
 pip install "pwdlib[argon2]" # (recommended) securely hash user passwords (passlib is older)
 pip install pyjwt # provides tools to encode/decode JWT tokens (e.g., creating tokens on login, verifying tokens in protected routes)(alternative: python-jose)
 pip install pydantic-settings (... + supports .env file)
 
-part 11:
-at 27:30
+part 12:
+pip install Pillow
+python-multipart (fastapi uses it to parse form-data) is already installed by standard,
+at 12:30
 
 
 learn more about: attribute_names(in posts.py), 
@@ -40,7 +48,7 @@ git remote add origin https://github.com/anup-sdp/cs-blogpost-1.3.git
 git push -u origin main
 =====
 git add .
-git commit -m "add part-11"
+git commit -m "add part-12"
 git push -u origin main
 ---
 git log --oneline  # commit history
