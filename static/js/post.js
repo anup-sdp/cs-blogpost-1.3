@@ -1,16 +1,14 @@
 // to be used in templates/post.html
 // handles edit and delete post functionality
+/* 
+this file was previously inline in templates/post.html, note: External JS cannot contain Jinja2 syntax, eg. "{{ post.id }}"
+Get post ID from Jinja2 template
+*/
 
 // import {getErrorMessage, hideModal, showModal,} from "/static/js/utils.js"; // absolute path from site/domain root
 import { getCurrentUser, getToken } from '/static/js/auth.js';
 import { getErrorMessage, showModal, hideModal } from '/static/js/utils.js';
-/* 
-this file was previously inline in post.html, note: External JS cannot contain Jinja2 syntax, eg. "{{ post.id }}"
-Get post ID from Jinja2 template
-const postId = {{ post.id }}; // linter/type-checker: Property assignment expected.javascript, ',' expected.javascript, Declaration or statement expected.javascript
-const postId = "{{ post.id }}";
-const postId = Number("{{ post.id }}"); // at runtime server renders Jinja expression to a valid JS value
-*/
+
 // Get post ID from the hidden input field
 const postId = Number(document.querySelector('input[name="post_id"]').value);
 const postUserId = Number(document.querySelector('.content-section').dataset.userId); // get user_id from data attribute on article element

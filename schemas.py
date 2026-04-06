@@ -62,3 +62,52 @@ class PostResponse(PostBase):
     user_id: int
     date_posted: datetime
     author: UserPublic
+
+
+class PaginatedPostsResponse(BaseModel):    
+    total: int
+    skip: int
+    limit: int
+    has_more: bool
+    posts: list[PostResponse]
+
+
+"""
+# reject suspicious input
+import re
+from fastapi import HTTPException
+
+def validate_content(text: str):
+    if len(text.strip()) == 0:
+        raise HTTPException(status_code=400, detail="Content cannot be empty")
+
+    if len(text) > 5000:
+        raise HTTPException(status_code=400, detail="Content too long")
+
+    # Optional: reject obvious HTML tags
+    if re.search(r"<[^>]+>", text):
+        raise HTTPException(status_code=400, detail="HTML is not allowed")
+
+    return text
+
+# usage:
+from pydantic import BaseModel, EmailStr, field_validator
+
+class PostCreate(BaseModel):
+    username: str
+    email: EmailStr
+    title: str
+    content: str
+
+    @field_validator("username")
+    @classmethod
+    def validate_username(cls, v):
+        if not v.isalnum():
+            raise ValueError("Username must be alphanumeric")
+        return v
+
+    @field_validator("content")
+    @classmethod
+    def validate_content(cls, v):
+        return validate_content(v)
+"""

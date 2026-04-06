@@ -108,7 +108,7 @@
 {% endblock content %}
 {% block scripts %}
     {# Load post-specific JavaScript module for edit/delete functionality #}
-    <script type="module" src="{{ url_for('static', path='js/post.js') }}"></script>
+    <script type="module" src="{{ url_for('static', path='js/post.js') }}"></script> <!-- static available without importing ? -->
     {# example in django, {% static 'js/file.js' %} #}
 {% endblock scripts %}
 

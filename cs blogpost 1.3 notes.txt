@@ -1,3 +1,4 @@
+# fastapi tutorial app blogpost
 # corey schafer playlist https://www.youtube.com/playlist?list=PL-osiE80TeTsak-c-QsVeg0YYG_0TeyXI
 # part 7, https://www.youtube.com/watch?v=2JPDt-Jp6fM&list=PL-osiE80TeTsak-c-QsVeg0YYG_0TeyXI&index=8 (Sync vs Async - Converting Your App to Asynchronous)
 # part 8, https://www.youtube.com/watch?v=NkgIHa6KtHg&list=PL-osiE80TeTsak-c-QsVeg0YYG_0TeyXI&index=9 (Routers - Organizing Routes into Modules with APIRouter)
@@ -5,6 +6,7 @@
 # part 10, https://www.youtube.com/watch?v=Go4wYJJhR3k&list=PL-osiE80TeTsak-c-QsVeg0YYG_0TeyXI&index=10 (Authentication - Registration and Login with JWT)
 # part 11, https://www.youtube.com/watch?v=MY0TFMMm9B0&list=PL-osiE80TeTsak-c-QsVeg0YYG_0TeyXI&index=11&t=11s (Authorization - Protecting Routes and Verifying Current User)
 # part 12, https://www.youtube.com/watch?v=AExumWjfbyo&list=PL-osiE80TeTsak-c-QsVeg0YYG_0TeyXI&index=12&t=133s (File Uploads - Image Processing, Validation, and Storage)
+# part 13, https://www.youtube.com/watch?v=f1zggIOxmJg&list=PL-osiE80TeTsak-c-QsVeg0YYG_0TeyXI&index=13&t=177s (Pagination - Loading More Data with Query Parameters)
 
 cmd:
 python -m venv myenv
@@ -17,8 +19,9 @@ pip freeze > requirements.txt
 code .
 write files
 
+run app:
 fastapi dev main.py
-uvicorn main:app --reload
+or, uvicorn main:app --reload
 
 ---
 users:
@@ -33,9 +36,13 @@ pip install pydantic-settings (... + supports .env file)
 part 12:
 pip install Pillow
 python-multipart (fastapi uses it to parse form-data) is already installed by standard,
-at 12:30
 
+part 13:
+use populate_db to mass insert posts data to db (alternatively use fixtures?)
+recommended library for production: fastapi-pagination # https://github.com/uriyyo/fastapi-pagination
+todo: change pagination style in frontend code -----
 
+removed jinja2 templating red squiggy lines on infile js template syntax {{var_name}} in htmls by keeping them in separate js file. 
 learn more about: attribute_names(in posts.py), 
 
 =====
@@ -48,7 +55,7 @@ git remote add origin https://github.com/anup-sdp/cs-blogpost-1.3.git
 git push -u origin main
 =====
 git add .
-git commit -m "add part-12"
+git commit -m "add part-13"
 git push -u origin main
 ---
 git log --oneline  # commit history
