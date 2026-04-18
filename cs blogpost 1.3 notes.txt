@@ -8,6 +8,7 @@
 # part 12, https://www.youtube.com/watch?v=AExumWjfbyo&list=PL-osiE80TeTsak-c-QsVeg0YYG_0TeyXI&index=12 (File Uploads - Image Processing, Validation, and Storage)
 # part 13, https://www.youtube.com/watch?v=f1zggIOxmJg&list=PL-osiE80TeTsak-c-QsVeg0YYG_0TeyXI&index=13 (Pagination - Loading More Data with Query Parameters)
 # part 14, https://www.youtube.com/watch?v=4HxjBvZMAg8&list=PL-osiE80TeTsak-c-QsVeg0YYG_0TeyXI&index=14 (Password Reset - Email, Tokens, and Background Tasks)
+# part 15, https://www.youtube.com/watch?v=e8NnDz8uT7o&list=PL-osiE80TeTsak-c-QsVeg0YYG_0TeyXI&index=15 (PostgreSQL and Alembic - Database Migrations for Production)
 
 cmd:
 python -m venv myenv
@@ -57,7 +58,34 @@ uv run uvicorn main:app -----
 uv add aiosmtplib --(async email sending)
 uv export --no-hashes --no-header --no-annotate --no-dev --output-file requirements.txt
 
+part 15:
+remove previous sqlite db as we will be using postgres
+uv remove aiosqlite
+uv add asyncpg alembic
+alembic : for migrations
+asyncpg : for postgres db
+uv export --no-hashes --no-header --no-annotate --no-dev --output-file requirements.txt
 
+run: alembic init -t async alembic  // initialize Alembic
+in alembic.ini and env.py changed lines are marked with comment: # ---
+run: 
+  alembic revision --autogenerate -m "Initial migration"  // create migration -> in alembic/versions new file created
+  alembic upgrade head  // apply migration
+for test: add likes field to Post model (schema change ? ---)
+run:
+  alembic revision --autogenerate -m "add likes field to Post model" 
+  alembic upgrade head
+ 
+users: 
+anupbarua30, anupbarua30@gmail.com, aB@12345 -----
+kasem, kasem@example.com, aB@12345
+
+
+part 16:
+"Local S3" Alternative: 
+MinIO. It is an open-source object storage server that is API-compatible with Amazon S3. 
+You can run it on your own machine (using Docker or a simple executable), 
+and it will behave exactly like AWS S3.
 
 =====
 git:
@@ -69,7 +97,7 @@ git remote add origin https://github.com/anup-sdp/cs-blogpost-1.3.git
 git push -u origin main
 =====
 git add .
-git commit -m "add part-14"
+git commit -m "add part-15"
 git push -u origin main
 ---
 git log --oneline  # commit history

@@ -17,15 +17,15 @@ from starlette.exceptions import HTTPException as StarletteHTTPException
 
 import models
 from config import settings
-from database import Base, engine, get_db
+from database import engine, get_db
 from routers import posts, users
 
 @asynccontextmanager
 async def lifespan(_app: FastAPI):
-    # Startup
-    async with engine.begin() as conn:
-        await conn.run_sync(Base.metadata.create_all) # --- run_sync(), create_all() is NOT async, In production should use Alembic migrations instead.
-        # run_sync() exists because some ORM operations are inherently synchronous, and async SQLAlchemy provides a safe bridge to run them without breaking the event loop.
+    # # Startup
+    # async with engine.begin() as conn:
+    #     await conn.run_sync(Base.metadata.create_all) # --- run_sync(), create_all() is NOT async, In production should use Alembic migrations instead.
+    #     # run_sync() exists because some ORM operations are inherently synchronous, and async SQLAlchemy provides a safe bridge to run them without breaking the event loop.
     yield
     # Shutdown
     await engine.dispose()

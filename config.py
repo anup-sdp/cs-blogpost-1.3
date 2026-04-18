@@ -13,7 +13,8 @@ class Settings(BaseSettings):
     )
     
     debug: bool = True # fields in .env will override these defaults
-    database_url: str = "sqlite+aiosqlite:///./blog.db"
+    # database_url: str = "sqlite+aiosqlite:///./blog.db" # older sqlite url, replaced with postgres below
+    database_url: str = "postgresql+asyncpg://user:password@localhost/blogpost1.3"  # example for PostgreSQL, set in .env file
 
     secret_key: SecretStr = "my-secret-key-2026"  # loaded from .env file,
     algorithm: str = "HS256"
