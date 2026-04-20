@@ -27,7 +27,7 @@ or, uvicorn main:app --reload
 
 ---
 users:
-username: anup30, email: anupbarua30@gmail.com, pw: aB@12345b
+username: anup30, email: anupbarua30@gmail.com, pw: aB@12345
 username: kasem, email: kasem@example.com, pw: aB@12345
 ---
 part 10:
@@ -82,10 +82,25 @@ kasem, kasem@example.com, aB@12345
 
 
 part 16:
+uv add boto3
+
 "Local S3" Alternative: 
 MinIO. It is an open-source object storage server that is API-compatible with Amazon S3. 
 You can run it on your own machine (using Docker or a simple executable), 
 and it will behave exactly like AWS S3.
+
+setup wsl+docker in windows 
+
+aws s3 bucket setup at 5:00 video (re-watch latter)
+
+new files, check if needed:
+aws_bucket_policy.json (not needed for minio)
+aws_iam_policy.json (not needed for minio)
+check_s3.py (can check setup)
+changed files:
+config.py, image_utils.py, main.py, models.py, users.py, 
+
+
 
 =====
 git:
@@ -97,7 +112,7 @@ git remote add origin https://github.com/anup-sdp/cs-blogpost-1.3.git
 git push -u origin main
 =====
 git add .
-git commit -m "add part-15"
+git commit -m "add part-16"
 git push -u origin main
 ---
 git log --oneline  # commit history
