@@ -9,6 +9,9 @@
 # part 13, https://www.youtube.com/watch?v=f1zggIOxmJg&list=PL-osiE80TeTsak-c-QsVeg0YYG_0TeyXI&index=13 (Pagination - Loading More Data with Query Parameters)
 # part 14, https://www.youtube.com/watch?v=4HxjBvZMAg8&list=PL-osiE80TeTsak-c-QsVeg0YYG_0TeyXI&index=14 (Password Reset - Email, Tokens, and Background Tasks)
 # part 15, https://www.youtube.com/watch?v=e8NnDz8uT7o&list=PL-osiE80TeTsak-c-QsVeg0YYG_0TeyXI&index=15 (PostgreSQL and Alembic - Database Migrations for Production)
+# part 16, https://www.youtube.com/watch?v=zCTJ3AdDym4&list=PL-osiE80TeTsak-c-QsVeg0YYG_0TeyXI&index=16 (AWS S3 and Boto3 - Moving File Uploads to the Cloud)
+# part 17, https://www.youtube.com/watch?v=SO7m7nod0ts&list=PL-osiE80TeTsak-c-QsVeg0YYG_0TeyXI&index=18 (Testing the API - Pytest, Fixtures, and Mocking External Services)
+
 
 cmd:
 python -m venv myenv
@@ -61,7 +64,7 @@ uv export --no-hashes --no-header --no-annotate --no-dev --output-file requireme
 part 15:
 remove previous sqlite db as we will be using postgres
 uv remove aiosqlite
-uv add asyncpg alembic
+uv add asyncpg psycopg alembic
 alembic : for migrations
 asyncpg : for postgres db
 uv export --no-hashes --no-header --no-annotate --no-dev --output-file requirements.txt
@@ -100,6 +103,14 @@ check_s3.py (can check setup)
 changed files:
 config.py, image_utils.py, main.py, models.py, users.py, 
 
+part 17: 36:00 -----
+uv add --dev pytest
+uv add --dev "moto[s3]" 
+// moto: for unit tests, a library that allows you to mock out AWS services. it can mock almost every AWS service (Lambda, EC2, DynamoDB, etc.)
+// Automated fast unit tests (Pytest), Moto works by "intercepting" Boto3 calls and redirecting them to its own in-memory storage. Everything is in-memory (deleted after test).
+21:40 create test_blog (postgres)
+
+
 
 
 =====
@@ -112,7 +123,7 @@ git remote add origin https://github.com/anup-sdp/cs-blogpost-1.3.git
 git push -u origin main
 =====
 git add .
-git commit -m "add part-16"
+git commit -m "add part-17"
 git push -u origin main
 ---
 git log --oneline  # commit history
