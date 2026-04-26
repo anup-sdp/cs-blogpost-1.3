@@ -1,5 +1,6 @@
 # tests/conftest.py
 # pytest recognizes conftest automatically.
+
 """
 This file configures pytest fixtures for integration testing our FastAPI blog project with 
 a temporary test database and mocked AWS S3, and a test HTTP client that talks to our app without starting a real server.
@@ -21,9 +22,8 @@ if sys.platform == "win32":
 import os
 from collections.abc import AsyncGenerator
 
-os.environ["DATABASE_URL"] = (
-    "postgresql+psycopg://bloguser:blogpass@localhost/test_blog"
-)
+# psycopg instead of asyncpg, SQLAlchemy 2.0 async testing best practices strongly recommend using psycopg (although asyncpg used in main app)
+os.environ["DATABASE_URL"] = ("postgresql+psycopg://bloguser:blogpass@localhost/test_blog")
 os.environ["S3_BUCKET_NAME"] = "test-bucket"
 os.environ["SECRET_KEY"] = "test-secret-key-for-testing-only"
 
@@ -57,12 +57,9 @@ def anyio_backend():
     return "asyncio"
 
 
-@pytest.fixture(scope="session")
+@pytest.fixture(scope="session") # scope="session" means this fixture will be created once per test session, and shared across all tests
 def test_engine():
-    engine = create_async_engine(
-        os.environ["DATABASE_URL"],
-        poolclass=NullPool,
-    )
+    engine = create_async_engine(os.environ["DATABASE_URL"], poolclass=NullPool,) # psycopg 3 driver in asynchronous mode ---
     return engine
 
 
@@ -156,8 +153,8 @@ async def login_user(
 ) -> str:
     response = await client.post(
         "/api/users/token",
-        data={
-            "username": email,
+        data={ # data instead of json, because the token endpoint expects form data (application/x-www-form-urlencoded) ---
+            "username": email, # ---
             "password": password,
         },
     )
@@ -170,16 +167,28 @@ def auth_header(token: str) -> dict[str, str]:
 
 
 """
-pytest:
-pytest is a popular, mature, and feature-rich testing framework for Python. 
-It is widely used in the industry because it allows you to write small, 
-simple tests with minimal boilerplate code, 
-while also scaling up to support complex functional testing for applications and libraries.
-you just write functions starting with test_
+pytest: 
+pytest is a popular, full-featured testing framework for Python.
+It's currently the most widely used testing tool in the Python ecosystem (even more popular than the built-in unittest module).
+Key Features:
+Plain assert, Fixtures (very powerful), Parametrized tests,
+pytest will automatically find and run all tests that:
+Are in files named test_*.py or *_test.py
+Have functions starting with test_
+
+Plugins (some popular ones): 
+pytest-cov → code coverage, pytest-django → Django testing, pytest-asyncio → async tests, pytest-xdist → run tests in parallel, pytest-mock → mocking
 
 Fixtures:
 Fixtures are functions that run before each test function to set up resources 
 (like database connections, temporary files, or mock data). They are highly modular and reusable.
+"""
+
+"""
+psycopg : supports both synchronous and asynchronous usage. When used asynchronously, 
+it provides an async interface while remaining compatible with the traditional DB-API 2.0 style. (this file uses TestClient, which is synchronous)
+asyncpg : A high-performance, pure async PostgreSQL driver written specifically for asyncio. (often claimed to be ~3-5x faster than psycopg in raw benchmarks)
+httpx : Async HTTP client for testing FastAPI endpoints
 """
 
 """

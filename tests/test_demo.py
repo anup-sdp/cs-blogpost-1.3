@@ -9,7 +9,7 @@ demo_app = FastAPI()
 def demo_home():
     return {"message": "Hello!"}
 
-client  = TestClient(demo_app)
+client  = TestClient(demo_app)  # TestClient (sync) instead of AsyncClient
 
 def test_homepage():
     response = client.get("/")
@@ -19,8 +19,3 @@ def test_homepage():
 
 # uv run pytest tests/test_demo.py -v
 
-"""
-psycopg = Sync PostgreSQL driver (this file uses TestClient, which is synchronous)
-asyncpg = Async PostgreSQL driver
-httpx = Async HTTP client for testing FastAPI endpoints
-"""
