@@ -10,7 +10,7 @@ from fastapi.exception_handlers import (
 from fastapi.exceptions import RequestValidationError
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
-from sqlalchemy import select, func
+from sqlalchemy import select, func, text
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
 from starlette.exceptions import HTTPException as StarletteHTTPException
@@ -38,6 +38,17 @@ app.include_router(posts.router, prefix="/api/posts", tags=["posts"])
 app.mount("/static", StaticFiles(directory="static"), name="static") # serving static files with FastAPI app, in production use a dedicated server like Nginx
 
 templates = Jinja2Templates(directory="templates")
+
+@app.get("/health")
+async def health_check(db: Annotated[AsyncSession, Depends(get_db)]):
+    try:
+        await db.execute(text("SELECT 1")) # checks if the database connection is working
+    except Exception as exc: # database is down
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail="Database unavailable",
+        ) from exc
+    return {"status": "healthy"}
 
 
 @app.get("/", include_in_schema=False, name="home")
@@ -222,7 +233,9 @@ async def validation_exception_handler(
 # uvicorn main:app --reload
 # uv run uvicorn main:app --reload
 
-# question: how oauth2 is being used instead of jsut jwt tokens? -----
+# http://127.0.0.1:8000/
+# http://127.0.0.1:8000/docs
+
 
 """
 Base.metadata.create_all(engine):
@@ -251,4 +264,6 @@ Starlette: a lightweight, high-performance Python ASGI web framework that FastAP
 FastAPI inherits directly from Starlette's class, which is why it gets high performance and core features like routing and WebSocket support from it.
 
 """
+
+# question: how oauth2 is being used instead of jsut jwt tokens? -----
 

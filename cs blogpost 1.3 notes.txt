@@ -103,14 +103,14 @@ check_s3.py (can check setup)
 changed files:
 config.py, image_utils.py, main.py, models.py, users.py, 
 
-part 17: 1:11:00 -----
+part 17: 
 uv add --dev pytest
 uv add --dev "moto[s3]" 
 // moto: for unit tests, a library that allows you to mock out AWS services. it can mock almost every AWS service (Lambda, EC2, DynamoDB, etc.)
 // Automated fast unit tests (Pytest), Moto works by "intercepting" Boto3 calls and redirecting them to its own in-memory storage. Everything is in-memory (deleted after test).
 21:40 create test_blog (postgres)
 
-
+part 18: at 9:30 -----
 
 
 =====
@@ -123,7 +123,7 @@ git remote add origin https://github.com/anup-sdp/cs-blogpost-1.3.git
 git push -u origin main
 =====
 git add .
-git commit -m "add part-17v2"
+git commit -m "add part-18 /health endpoint"
 git push -u origin main
 ---
 git log --oneline  # commit history
