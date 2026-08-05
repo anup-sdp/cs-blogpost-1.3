@@ -11,7 +11,7 @@
 # part 15, https://www.youtube.com/watch?v=e8NnDz8uT7o&list=PL-osiE80TeTsak-c-QsVeg0YYG_0TeyXI&index=15 (PostgreSQL and Alembic - Database Migrations for Production)
 # part 16, https://www.youtube.com/watch?v=zCTJ3AdDym4&list=PL-osiE80TeTsak-c-QsVeg0YYG_0TeyXI&index=16 (AWS S3 and Boto3 - Moving File Uploads to the Cloud)
 # part 17, https://www.youtube.com/watch?v=SO7m7nod0ts&list=PL-osiE80TeTsak-c-QsVeg0YYG_0TeyXI&index=18 (Testing the API - Pytest, Fixtures, and Mocking External Services)
-
+# part 18, https://www.youtube.com/watch?v=wd1wt2d0eus&list=PL-osiE80TeTsak-c-QsVeg0YYG_0TeyXI&index=19 (Deploy to a VPS - Security, Nginx, SSL, and Custom Domain)
 
 cmd:
 python -m venv myenv
@@ -93,6 +93,7 @@ You can run it on your own machine (using Docker or a simple executable),
 and it will behave exactly like AWS S3.
 
 setup wsl+docker in windows 
+details in Anup\prog\docker minio guides
 
 aws s3 bucket setup at 5:00 video (re-watch latter)
 
@@ -110,7 +111,25 @@ uv add --dev "moto[s3]"
 // Automated fast unit tests (Pytest), Moto works by "intercepting" Boto3 calls and redirecting them to its own in-memory storage. Everything is in-memory (deleted after test).
 21:40 create test_blog (postgres)
 
-part 18: at 9:30 -----
+part 18: at 35:30 -----
+linodes vps deployment at 10:50
+follow vps_setup.txt file, in the file there are:
+  Ubuntu server setup
+  SSH hardening
+  Firewall (UFW) + Fail2Ban
+  NGINX
+  PostgreSQL
+  FastAPI with systemd
+  HTTPS via Let's Encrypt
+
+systemd: 
+  systemd is a system and service manager for Linux operating systems. It's the first process that starts when your VPS boots up and manages everything else that runs on your server.
+  Think of it as the "master controller" or "orchestrator" of your VPS. It's responsible for starting, stopping, monitoring, and logging all other processes (services) on your Linux system.
+  When you deploy applications on a VPS, you need them to run continuously, survive reboots, and be manageable. systemd is the tool that makes this possible.
+
+systemctl is the command-line tool used to control and interact with systemd,
+Think of systemd as the "mother of all processes" (PID 1) that manages everything else, and systemctl as your remote control to command it.
+
 
 
 =====
@@ -123,7 +142,7 @@ git remote add origin https://github.com/anup-sdp/cs-blogpost-1.3.git
 git push -u origin main
 =====
 git add .
-git commit -m "add part-18 /health endpoint"
+git commit -m "add README.md"
 git push -u origin main
 ---
 git log --oneline  # commit history
