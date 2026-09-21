@@ -1,0 +1,5 @@
+rebuild the docker minio container (free aws alternative),
+as first one is destroyed!
+
+minio used for part 16 ?
+-----
